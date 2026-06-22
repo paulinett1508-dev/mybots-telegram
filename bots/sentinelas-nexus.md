@@ -1,8 +1,12 @@
 # Sentinelas (Oráculo) — NEXUS
 
-- **Username:** sem bot próprio — `/mybots` não listou bot de sentinela. **Provavelmente reusa o
-  token do SHELDON** (`@sheldonsbr_bot`, ID 8841226177). Confirmar no host em `/etc/nexus-sentinela.env`.
-- **Bot ID numérico:** herdado (a confirmar)
+- **Username:** sem bot próprio. **Confirmado:** `sentinela.py`/`sentinela-zion.py` leem
+  `TELEGRAM_BOT_TOKEN` de `/etc/nexus-sentinela.env` e o `/mybots` não tem bot de sentinela →
+  **reusam o token do SHELDON** (`@sheldonsbr_bot`, ID 8841226177).
+- **Bot ID numérico:** 8841226177 (herdado do Sheldon).
+- **⚠️ SPOF:** o dead-man's-switch posta com o MESMO token que vigia. Se o token do Sheldon for
+  revogado/comprometido, o watchdog morre junto — derrotando o propósito de canal independente.
+  Correção ideal: bot próprio para os Sentinelas (token distinto). Ver PROPAGACAO.
 - **Persona:** dead-man's-switch externo. Vigiam o Sheldon-local (.213) e a VPS irmã "Zion" por um
   canal **independente** — se o Sheldon cai, os Sentinelas avisam.
 - **Repo de origem:** `nexus-labsobral` (em `servers/nexus-vps01/`)

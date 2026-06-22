@@ -15,6 +15,15 @@ Prioridade: 🔴 alta (ganho claro, baixo atrito) · 🟡 média · ⚪ avaliar.
   `nexus/scripts/dvr-check.py`, defaults em código do Sheldon). O vigia existe mas só cobre o que o
   Sentinel varre. Deveria ser scan padrão sobre **todo** repo do org.
 - **Esforço:** baixo (Sentinel já roda em Actions cron; estender o escopo de repos).
+- **Andamento:** criado `tools/audit-secrets.sh` neste repo (scan one-shot/CLI sobre N repos, com
+  redação dos valores). Versão durável deve migrar para o Sentinel rodando em GitHub Actions cron.
+  Achados da 1ª varredura: ver `tools/AUDIT-FINDINGS.md`.
+
+### Bot próprio para as Sentinelas (NEXUS) — corrigir SPOF
+- **Racional:** as Sentinelas (dead-man's-switch) postam com o token do SHELDON
+  (`/etc/nexus-sentinela.env`). Se esse token cai, o watchdog cai junto — anula o canal independente.
+- **Correção:** registrar um bot dedicado no BotFather (`@sbrsentinela_bot`?) e usar token distinto.
+- **Esforço:** baixo (1 bot novo + trocar a var no env do host).
 
 ### ACK inline + escalação por silêncio (Sheldon/THEO) → BigCartola (avisos)
 - **Racional:** BigCartola tem `inline_keyboard` só como deep-link, e posta evento novo em vez de
