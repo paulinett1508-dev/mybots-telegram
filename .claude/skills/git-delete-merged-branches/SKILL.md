@@ -1,0 +1,11 @@
+---
+name: git-delete-merged-branches
+description: "Delete Merged Branches"
+---
+
+Ver o conteúdo completo da skill em:
+
+`.agnostic-core/skills/git/delete-merged-branches.md`
+
+Esta skill faz parte do acervo `agnostic-core`. O arquivo-fonte acima é
+a referência canônica — edite lá, não aqui.
