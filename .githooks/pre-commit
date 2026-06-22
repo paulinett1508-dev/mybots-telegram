@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Bloqueia o commit se houver segredo no conteúdo staged ou se um arquivo proibido for adicionado.
+set -uo pipefail
+HOOKDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+fail=0
+
+# 1) Arquivos que NUNCA podem ser commitados (por nome)
+banned="$(git diff --cached --name-only | grep -Ei '(^|/)identity\.key$|\.age\.key$|(^|/)secrets\.env$|\.decrypted$' || true)"
+if [ -n "$banned" ]; then
+  echo "BLOQUEADO: arquivos proibidos no commit:" >&2
+  printf '  - %s\n' $banned >&2
+  fail=1
+fi
+
+# 2) Scan de conteúdo staged (linhas adicionadas)
+added="$(git diff --cached --no-color -U0 | grep -E '^\+' | grep -vE '^\+\+\+' || true)"
+if [ -n "$added" ]; then
+  if ! printf '%s' "$added" | bash "$HOOKDIR/scan-secrets.sh"; then
+    echo "BLOQUEADO: segredo detectado no conteúdo staged (veja acima)." >&2
+    fail=1
+  fi
+fi
+
+if [ "$fail" -ne 0 ]; then
+  echo "" >&2
+  echo "Commit abortado pelo guardião. Tokens/secrets NUNCA entram no git." >&2
+  echo "Use ./vault/vault.sh set CHAVE VALOR para guardar segredos criptografados." >&2
+  echo "(Para emergência consciente: git commit --no-verify — desaconselhado.)" >&2
+  exit 1
+fi
+exit 0

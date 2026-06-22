@@ -1,0 +1,17 @@
+# Chaves privadas — NUNCA versionar (a canônica vive fora do repo, isto é defesa extra)
+identity.key
+*.age.key
+*.pem
+*.key
+
+# Plaintext de segredo — só o .age (ciphertext) pode ser versionado
+vault/secrets.env
+*.decrypted
+*.plain
+.env
+.env.*
+!.env.example
+
+# Scratch
+*.tmp
+*.log

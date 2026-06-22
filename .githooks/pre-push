@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Backstop: antes de pushar, varre TODOS os arquivos rastreados em busca de segredo.
+# Pega qualquer coisa que tenha escapado do pre-commit (ex.: commit com --no-verify).
+set -uo pipefail
+HOOKDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+fail=0
+while IFS= read -r f; do
+  [ -f "$f" ] || continue
+  case "$f" in *.age) continue;; esac   # ciphertext age é seguro, não escanear
+  if ! bash "$HOOKDIR/scan-secrets.sh" < "$f" >/tmp/_scan_$$ 2>&1; then
+    echo "BLOQUEADO em $f:" >&2
+    cat /tmp/_scan_$$ >&2
+    fail=1
+  fi
+done < <(git ls-files)
+rm -f /tmp/_scan_$$
+
+if [ "$fail" -ne 0 ]; then
+  echo "" >&2
+  echo "Push abortado pelo guardião — segredo em arquivo rastreado." >&2
+  echo "Remova o segredo, mova para o vault, e reescreva o histórico se já foi commitado." >&2
+  exit 1
+fi
+exit 0

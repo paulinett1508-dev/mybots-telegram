@@ -1,6 +1,24 @@
-NOME DO PROJETO — Fullstack
+mybots-telegram — Governança comportamental da família de bots Telegram
 
-Stack: [DESCREVER: ex Node.js + React + MongoDB]
+Este repo NÃO tem código de bot. É a fonte de verdade do *comportamento* e da *padronização*
+dos bots Telegram do ecossistema paulinett1508-dev. Os bots vivem em outros repos; aqui se governa
+o que eles fazem, como fazem, quem já tem o quê, e o que deve propagar de um para o outro.
+
+Estrutura:
+  bots/                  Um arquivo por bot — persona, domínio, stack, capacidades, o que é único
+  MATRIX-CAPACIDADES.md  Tabela bot × capacidade (a foto do "quem tem o quê")
+  PADROES/               Specs de referência dos comportamentos compartilháveis
+  PROPAGACAO.md          Backlog priorizado: "inteligência X do bot A deveria ir para o bot B"
+
+Regras do repo:
+  - Nunca commitar segredos. Tokens, chaves Groq, PATs ficam em ~/.env por host (ADR-005).
+    Aqui só entram usernames, bot IDs numéricos, chat/topic IDs.
+  - Referenciar, não duplicar. A implementação vive nos repos de origem; aqui aponta-se o
+    arquivo-chave (repo:caminho), não se cola o código.
+  - Padrão é descritivo, não prescritivo cego. Cada bot tem escopo próprio.
+  - Toda mudança de comportamento real que vire padrão atualiza MATRIX-CAPACIDADES.md
+    e, se aplicável, abre item em PROPAGACAO.md.
+
 Submodulo: .agnostic-core/
 
 ---
@@ -105,17 +123,19 @@ Git Auto-Push Workflow:
 
 ---
 
-Convencoes do projeto (preencher):
+Convencoes do projeto:
 
-  Backend: [LINGUAGEM] [VERSAO] + [FRAMEWORK] [VERSAO]
-  Frontend: [FRAMEWORK] [VERSAO]
-  Banco: [BANCO] [VERSAO] via [ORM/DRIVER]
-  Auth: JWT / OAuth / sessao
-  Cache: Redis / in-memory / nenhum
-  Testes: [FRAMEWORK DE TESTES]
-  CI/CD: GitHub Actions / outro
-  Deploy: [PLATAFORMA]
-  Estilo de commits: Conventional Commits
+  Natureza: repo de documentação/governança (Markdown). Não há build, runtime ou deploy.
+  Conteúdo: registry de bots, matriz de capacidades, specs de padrões, backlog de propagação.
+  Fonte dos fatos: repos de origem (planetas) — sempre verificar no código real antes de afirmar.
+  Estilo de commits: Conventional Commits.
+
+  Repos de origem (planetas):
+    SuperCartolaManagerv5-production  -> BigCartola (Node.js + grammY)
+    sbrgestao                          -> T.H.E.O. (Python stdlib)
+    nexus-labsobral                    -> S.H.E.L.D.O.N., Sentinelas, HERMES (Python httpx/stdlib)
+    theuniverse                        -> Obi-Wan, Sentinel, Artoo (Python httpx/stdlib)
+    the-matrix                         -> base de conhecimento (specs, ADRs; sem código)
 
 ---
 
