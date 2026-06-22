@@ -15,9 +15,10 @@ Prioridade: 🔴 alta (ganho claro, baixo atrito) · 🟡 média · ⚪ avaliar.
   `nexus/scripts/dvr-check.py`, defaults em código do Sheldon). O vigia existe mas só cobre o que o
   Sentinel varre. Deveria ser scan padrão sobre **todo** repo do org.
 - **Esforço:** baixo (Sentinel já roda em Actions cron; estender o escopo de repos).
-- **Andamento:** criado `tools/audit-secrets.sh` neste repo (scan one-shot/CLI sobre N repos, com
-  redação dos valores). Versão durável deve migrar para o Sentinel rodando em GitHub Actions cron.
-  Achados da 1ª varredura: ver `tools/AUDIT-FINDINGS.md`.
+- **✅ FEITO:** versão durável migrada para o Sentinel — `theuniverse` PR #6
+  (`scripts/secret_scan.py` + workflow `secret-audit.yml` cron diário + 8 testes). Complementa o
+  `secret_exposto` nativo com regex de conteúdo (pega segredos custom em repo privado). O
+  `tools/audit-secrets.sh` deste repo fica como CLI one-shot. Achados: `tools/AUDIT-FINDINGS.md`.
 
 ### Bot próprio para as Sentinelas (NEXUS) — corrigir SPOF
 - **Racional:** as Sentinelas (dead-man's-switch) postam com o token do SHELDON

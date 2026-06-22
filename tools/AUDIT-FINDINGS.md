@@ -13,6 +13,7 @@ exposição dos 5 tokens de bot veio do chat, não do código.
 |---|------|---------------|---------------------|-----------|--------|
 | 2 | `ADMIN_PASSWORD='Sen***26'` + IP SSH `191.101.18.82` | `sbrgestao` → `apps/agnvendas/docs/superpowers/plans/2026-03-26-agnostic-core-improvements.md:1382` | 🌐→🔒 (era PÚBLICO, virou PRIVADO em 2026-06-22) | 🔴 ALTA | repo privado ✅ · **FORA DE ESCOPO**: a senha pertence a outra instância (não é alçada deste ecossistema); rotação é do dono daquela instância |
 | 1 | Senha RustDesk (acesso remoto desktop) `rus***11` | `nexus-labsobral` → `fileexplorer/static/install-rustdesk.ps1:20` **e** `servers/labsobral-214/rustdesk/share-pack/install-rustdesk.ps1:31` | 🔒 PRIVADO | 🔴 CRÍTICA (blast radius) | pendente |
+| 5 | Credencial admin do **Portainer** `@ce***dm` | `nexus-labsobral` → `fileexplorer/api/portainer.py:11` | 🔒 PRIVADO | 🔴 CRÍTICA (controle de containers) | pendente — achado novo pelo `secret_scan.py` (o grep inicial perdeu) |
 | 3 | Pi-hole `WEBPASSWORD "@ce***97"` | `nexus-labsobral` → `infra/docker/pihole/docker-compose.yml:12` | 🔒 PRIVADO | 🟠 MÉDIA-ALTA | pendente |
 | 4 | RTSP/DVR (câmeras) `sob***11` | `nexus-labsobral` → `scripts/dvr-check.py:28` | 🔒 PRIVADO | 🟠 MÉDIA | pendente |
 
@@ -30,6 +31,7 @@ Fixtures/exemplos de teste: `senha123`, `xyz789` (CODEIUM_API_KEY de teste), `ap
 3. **Limpar o histórico git** (`git filter-repo` ou BFG) — senão a senha antiga continua acessível no log.
 4. **Re-rodar** `tools/audit-secrets.sh` (ou o Sentinel) para confirmar repo limpo.
 
-## Próximo passo durável
-Migrar este scan para o **Sentinel** (`theuniverse/scripts/sentinel.py`, evento `secret_exposto`)
-rodando em GitHub Actions cron sobre todos os repos do org — assim novos vazamentos são pegos sozinhos.
+## Próximo passo durável — ✅ FEITO
+Migrado para o **Sentinel** em `theuniverse` (PR #6): `scripts/secret_scan.py` + workflow
+`secret-audit.yml` (cron diário) varrem o conteúdo de todos os repos do org e notificam no Telegram,
+complementando o `secret_exposto` nativo. Novos vazamentos agora são pegos sozinhos.
