@@ -1,23 +1,33 @@
-mybots-telegram — Governança comportamental da família de bots Telegram
+sentinel-core — O núcleo do guardião do ecossistema
 
-Este repo NÃO tem código de bot. É a fonte de verdade do *comportamento* e da *padronização*
-dos bots Telegram do ecossistema paulinett1508-dev. Os bots vivem em outros repos; aqui se governa
-o que eles fazem, como fazem, quem já tem o quê, e o que deve propagar de um para o outro.
+Control plane de governança do ecossistema paulinett1508-dev: segurança, compliance, auditoria,
+boas práticas e convergência de repos. NÃO tem código de runtime — é a camada de PADRÕES e POLÍTICAS
+que o motor executa e os notificadores anunciam. (Ex-`mybots-telegram`; reescopado em 2026-06.)
+
+Três planos do ecossistema:
+  MOTOR        Sentinel @ theuniverse — detecção/enforcement (secret-audit, compliance, drift,
+               score de postura, convergência). É quem VARRE e DECIDE. Ganha poderes — ver ROADMAP.md.
+  ENTREGA      Família de bots Telegram (Sheldon, Theo, Obi-Wan, Sentinel, Hermes, BigCartola) —
+               notificação de alta performance (alerta-como-estado, tópicos, escalação).
+  GOVERNANÇA   ESTE repo — o "norte": padrões que todo repo deve cumprir, matriz de capacidades,
+               regras de convergência, backlog de propagação. Define O QUE o motor cobra.
 
 Estrutura:
-  bots/                  Um arquivo por bot — persona, domínio, stack, capacidades, o que é único
-  MATRIX-CAPACIDADES.md  Tabela bot × capacidade (a foto do "quem tem o quê")
-  PADROES/               Specs de referência dos comportamentos compartilháveis
-  PROPAGACAO.md          Backlog priorizado: "inteligência X do bot A deveria ir para o bot B"
+  ROADMAP.md             Poderes do Sentinel: o que já existe e o que vem (compliance, SCA, postura…)
+  bots/                  Camada de ENTREGA — ficha por bot (persona, stack, capacidades)
+  MATRIX-CAPACIDADES.md  Matriz bot × capacidade (foto do "quem tem o quê")
+  PADROES/               Specs de comportamento de notificador (referência compartilhável)
+  PROPAGACAO.md          Backlog: capacidade de A → B (cross-pollination)
+  tools/                 Auditorias one-shot/CLI (a versão durável vive no Sentinel)
+  vault/                 Segredos criptografados (age) + guardrails anti-vazamento
 
 Regras do repo:
-  - Nunca commitar segredos. Tokens, chaves Groq, PATs ficam em ~/.env por host (ADR-005).
-    Aqui só entram usernames, bot IDs numéricos, chat/topic IDs.
-  - Referenciar, não duplicar. A implementação vive nos repos de origem; aqui aponta-se o
+  - Nunca commitar segredos. Plaintext fica em ~/.env por host (ADR-005). Aqui: vault age (ciphertext)
+    + guardrails .githooks que bloqueiam token/secret no commit/push.
+  - Referenciar, não duplicar. Implementação vive no motor/repos de origem; aqui aponta-se o
     arquivo-chave (repo:caminho), não se cola o código.
-  - Padrão é descritivo, não prescritivo cego. Cada bot tem escopo próprio.
-  - Toda mudança de comportamento real que vire padrão atualiza MATRIX-CAPACIDADES.md
-    e, se aplicável, abre item em PROPAGACAO.md.
+  - Padrão é descritivo e versionado; convergência é o objetivo, não imposição cega caso a caso.
+  - Toda capacidade/política nova atualiza MATRIX-CAPACIDADES.md / ROADMAP.md e, se aplicável, PROPAGACAO.md.
 
 Submodulo: .agnostic-core/
 
