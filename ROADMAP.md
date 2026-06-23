@@ -33,6 +33,13 @@ Legenda: ✅ feito · 🚧 em andamento · ⬜ planejado.
 - ⬜ **CI/CD convergente** — mesmos workflows-base (lint, test, secret-audit) em todos.
 - ⬜ **Naming/lore** consistente com o ecossistema (Matrix/Universe/Nexus).
 
+## Embaixada (integração à Matrix)
+- ✅ **Contrato `posture-status@1`** no matrix-core (entidade `sentinel` registrada).
+- ✅ **Sentinel emite postura** (`state/posture-status.json`) a cada run — estado vivo por repo
+  (score 0–100, visibilidade, achados redigidos com `ref_key`). Outras entidades referenciam.
+- ⬜ Bridge host: sincronizar `posture-status.json` para `entity-exchange/posture/sentinel.json`.
+- ⬜ Bot próprio do Sentinel (corrigir SPOF; hoje reusa Obi-Wan).
+
 ## Entrega (notificadores)
 - ✅ Canal Telegram do Sentinel (`secret_exposto` nativo + secret-audit).
 - ⬜ Ver [`PROPAGACAO.md`](PROPAGACAO.md) — propagar alerta-como-estado, ACK inline, escalação,

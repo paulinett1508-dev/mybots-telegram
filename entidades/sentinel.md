@@ -52,8 +52,11 @@ sentinel: { papel: "guardião segurança/compliance/convergência", host: "theun
 
 ## Admissão (3 pilares) — status
 - [x] **Personalidade** — definida acima (persona + acrônimo).
-- [~] **Bot próprio** — pendente (hoje compartilha Obi-Wan → SPOF). Ver decisão.
-- [~] **Contrato de embaixada** — desenhado acima; emitir `posture-status@1` é o próximo passo (matrix-core + theuniverse).
+- [~] **Bot próprio** — adiado por decisão do Arquiteto; reusa `@guardiao_universo_bot` (SPOF conhecido).
+- [x] **Contrato de embaixada** — IMPLEMENTADO. `posture-status@1` no matrix-core (PR #5);
+      `sentinel` em `EntityId`+`AGENTS`. O Sentinel emite `state/posture-status.json` (theuniverse PR #8).
+
+Admissão **2/3** (bot próprio pendente). Entidade operante na embaixada.
 
 ## Capacidades (estado) — ver ROADMAP.md
 ✅ secret-audit de conteúdo · ⬜ branch protection · ⬜ score de postura · ⬜ SCA · ⬜ drift · ⬜ convergência agnostic-core.
