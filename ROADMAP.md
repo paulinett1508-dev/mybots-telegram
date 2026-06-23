@@ -13,7 +13,12 @@ Legenda: ✅ feito · 🚧 em andamento · ⬜ planejado.
 - ⬜ **Rotação rastreada** — registrar quando um segredo flagrado foi rotacionado/remediado.
 
 ## Compliance
-- ⬜ **Branch protection** em todo repo (require PR, status checks, no force-push em default).
+- 🚧 **Branch protection** — aplicada nos **19 repos públicos** + core (force-push e deleção barrados,
+  enforce em admin; sem exigir PR pra não travar push direto/workflows). **8 privados pendentes**
+  (`nexus-labsobral`, `the-matrix`, `sbrgestao`, `sbrchecks`, `sigmed`, `FinanceFlow`, `GessoExpress`,
+  `mcp-eventos`): branch protection em repo privado exige **GitHub Pro** (HTTP 403 no plano free).
+  > OBS (2026-06-23): Pro adiado por decisão do Arquiteto. Quando assinar, re-rodar a proteção nos 8
+  > privados (o 403 é teto de plano, não de permissão — o PAT já tem Administration: write).
 - ⬜ **Arquivos obrigatórios**: LICENSE, README, CODEOWNERS, SECURITY.md, .gitignore.
 - ⬜ **CI presente** e verde no default branch.
 - ⬜ **Visibilidade intencional** — repo público só com flag explícita; senão alerta.
