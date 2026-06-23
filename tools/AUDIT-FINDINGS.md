@@ -31,6 +31,17 @@ Fixtures/exemplos de teste: `senha123`, `xyz789` (CODEIUM_API_KEY de teste), `ap
 3. **Limpar o histórico git** (`git filter-repo` ou BFG) — senão a senha antiga continua acessível no log.
 4. **Re-rodar** `tools/audit-secrets.sh` (ou o Sentinel) para confirmar repo limpo.
 
+## 1ª varredura org-wide (Sentinel, 2026-06-22)
+O `secret_scan.py` rodou sobre **todos** os repos do org (não só os 5 da amostra): **28 achados brutos**.
+Muito é duplicata (Zabbix `zabbix` ×9, ADMIN_PASSWORD ×3) ou placeholder. Reais novos relevantes
+além dos 5 do nexus:
+- 🔴 `FinanceFlow/server/fixCollaboratorPassword.ts:12` — senha hardcoded em código de app.
+- 🟠 `sbrchecks/login-kit/scripts/tmp/zabbix-*.py` (×9) — senha default do Zabbix `zabbix` em scripts tmp.
+
+Ruído cortado no `theuniverse` PR #7 (calibração): linhas já redigidas (`***`), placeholders de chave
+privada (`.env.example`/README do `sicefsus-sistema`), arquivos `.example`. Fonte de verdade contínua:
+canal Telegram do Sentinel + `state/secret-scan-state.json`.
+
 ## Próximo passo durável — ✅ FEITO
 Migrado para o **Sentinel** em `theuniverse` (PR #6): `scripts/secret_scan.py` + workflow
 `secret-audit.yml` (cron diário) varrem o conteúdo de todos os repos do org e notificam no Telegram,
